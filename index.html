@@ -13,9 +13,9 @@
     .step-active { border-color: #F97316; background-color: #FFF7ED; }
     .btn-primary { background-color: #F97316; color: white; }
     .btn-primary:hover { background-color: #EA580C; }
-    /* Card selection styles */
-    .card-selected { border-color: #F97316; background-color: #FFF7ED; transform: scale(1.02); }
-    .selectable-card { border-color: #E5E7EB; transition: all 0.1s ease; cursor: pointer; }
+    /* Card selection styles - instant feedback */
+    .card-selected { border-color: #F97316; background-color: #FFF7ED !important; }
+    .selectable-card { border-color: #E5E7EB; cursor: pointer; }
     .selectable-card:hover { background-color: #F9FAFB; }
     /* Range slider styling */
     input[type=range] { accent-color: #F97316; }
@@ -463,24 +463,15 @@
     }
 
     function updateCardStyle(selectedInput) {
-      // Get the name of the radio group
       const groupName = selectedInput.name;
-
-      // Remove card-selected from all cards in this group
+      // 立即移除所有同组的选中状态
       document.querySelectorAll(`input[name="${groupName}"]`).forEach(input => {
-        const parentCard = input.parentElement.querySelector('.selectable-card');
-        if (parentCard) {
-          parentCard.classList.remove('card-selected');
-          parentCard.style.transform = '';
-        }
+        const card = input.parentElement.querySelector('.selectable-card');
+        if (card) card.classList.remove('card-selected');
       });
-
-      // Add card-selected to selected card
-      const card = selectedInput.parentElement.querySelector('.selectable-card');
-      if (card) {
-        card.classList.add('card-selected');
-        card.style.transform = 'scale(1.02)';
-      }
+      // 立即添加选中状态
+      const selectedCard = selectedInput.parentElement.querySelector('.selectable-card');
+      if (selectedCard) selectedCard.classList.add('card-selected');
     }
 
     function updateDesignTemp() {
