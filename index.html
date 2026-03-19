@@ -647,8 +647,8 @@
         selectedProduct = products.find(p => p.model === 'GSHVTH-24AA1') || products[products.length - 1];
       }
 
-      // Check if selected product is 3-in-1
-      isThreeInOne = (selectedProduct.type === 'R290 Monoblock' || selectedProduct.type === 'R32 Mono Inverter');
+      // Check if user selected cooling need (not based on product type)
+      isThreeInOne = needCooling;
 
       // Format product type for display
       const typeDisplay = {
