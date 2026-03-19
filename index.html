@@ -9,6 +9,7 @@
   <title>GOODHEAT 产品选型工具</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     .step-active { border-color: #F97316; background-color: #FFF7ED; }
@@ -725,76 +726,99 @@
       const result = window.currentResult;
       const details = productDetails[result.type] || {};
 
-      // Title
-      doc.setFontSize(20);
-      doc.setTextColor(249, 115, 22); // Orange color
-      doc.text('GOODHEAT 产品推荐报告', 20, 20);
+      // Colors
+      const primaryColor = [249, 115, 22]; // Orange
 
-      // Date
-      doc.setFontSize(10);
+      // Title
+      doc.setFontSize(22);
+      doc.setTextColor(...primaryColor);
+      doc.setFont('helvetica', 'bold');
+      doc.text('GOODHEAT Product Recommendation', 20, 20);
+
+      // Subtitle
+      doc.setFontSize(12);
       doc.setTextColor(100);
-      const date = new Date().toLocaleDateString('zh-CN');
-      doc.text(`生成日期：${date}`, 20, 30);
+      doc.setFont('helvetica', 'normal');
+      const date = new Date().toLocaleDateString();
+      doc.text(`Generated: ${date}`, 20, 30);
 
       // Line
-      doc.setDrawColor(249, 115, 22);
+      doc.setDrawColor(...primaryColor);
+      doc.setLineWidth(1);
       doc.line(20, 35, 190, 35);
 
       // Recommended Model
       doc.setFontSize(16);
       doc.setTextColor(0);
-      doc.text(`推荐型号：${result.model}`, 20, 50);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Model: ${result.model}`, 20, 50);
 
       doc.setFontSize(12);
       doc.setTextColor(100);
-      doc.text(`产品类型：${result.typeDisplay}`, 20, 60);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Type: ${result.typeDisplay}`, 20, 60);
 
       // Key Parameters
       doc.setFontSize(14);
       doc.setTextColor(0);
-      doc.text('关键参数：', 20, 75);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Key Parameters:', 20, 75);
 
       doc.setFontSize(11);
       doc.setTextColor(50);
-      doc.text(`• 采暖输出功率：${result.heatingCapacity} kW`, 25, 85);
-      doc.text(`• 热水容积：${result.waterVolume} L`, 25, 93);
-      doc.text(`• 能效等级：A+++`, 25, 101);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`• Heating Capacity: ${result.heatingCapacity} kW`, 25, 87);
+      doc.text(`• Hot Water Volume: ${result.waterVolume} L`, 25, 97);
+      doc.text(`• Energy Class: A+++`, 25, 107);
       if (details.temp !== 'N/A') {
-        doc.text(`• 最高出水温度：${details.temp}`, 25, 109);
+        doc.text(`• Max Water Temp: ${details.temp}`, 25, 117);
       }
       if (result.needCooling) {
-        doc.text(`• 功能：供暖 + 制冷 + 生活热水（三联供）`, 25, 117);
+        doc.text(`• Function: Heating + Cooling + DHW (3-in-1)`, 25, 127);
       } else {
-        doc.text(`• 功能：供暖 + 生活热水`, 25, 117);
+        doc.text(`• Function: Heating + DHW`, 25, 127);
       }
 
       // Features
       if (details.features && details.features.length > 0) {
         doc.setFontSize(14);
         doc.setTextColor(0);
-        doc.text('产品特点：', 20, 135);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Features:', 20, 147);
 
         doc.setFontSize(10);
         doc.setTextColor(50);
+        doc.setFont('helvetica', 'normal');
         details.features.forEach((feature, i) => {
-          doc.text(`• ${feature}`, 25, 145 + (i * 6));
+          doc.text(`• ${feature}`, 25, 157 + (i * 6));
         });
       }
 
       // User Input Summary
-      doc.setFontSize(14);
+      doc.setFontSize(12);
       doc.setTextColor(0);
-      doc.text('选型输入条件：', 20, 195);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Input Conditions:', 20, 205);
 
       const area = document.getElementById('area')?.value || '-';
-      const buildingType = document.querySelector('input[name="buildingType"]:checked')?.value || '-';
-      const heatingType = document.querySelector('input[name="heatingType"]:checked')?.value || '-';
+      const buildingTypeEl = document.querySelector('input[name="buildingType"]:checked');
+      const heatingTypeEl = document.querySelector('input[name="heatingType"]:checked');
+
+      const typeMap = {
+        'detached': 'Detached House',
+        'terraced': 'Terraced House',
+        'apartment': 'Apartment',
+        'radiator': 'Radiator',
+        'floor': 'Floor Heating',
+        'fancoil': 'Fan Coil'
+      };
 
       doc.setFontSize(10);
       doc.setTextColor(50);
-      doc.text(`• 建筑面积：${area} m²`, 25, 205);
-      doc.text(`• 建筑类型：${buildingType}`, 25, 212);
-      doc.text(`• 末端形式：${heatingType}`, 25, 219);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`• Floor Area: ${area} m²`, 25, 217);
+      doc.text(`• Building Type: ${typeMap[buildingTypeEl?.value] || buildingTypeEl?.value || '-'}`, 25, 225);
+      doc.text(`• Heating Type: ${typeMap[heatingTypeEl?.value] || heatingTypeEl?.value || '-'}`, 25, 233);
 
       // Footer
       doc.setFontSize(8);
@@ -803,7 +827,7 @@
       doc.text('www.goodheatglobal.com', 150, 280);
 
       // Save
-      doc.save(`GOODHEAT-${result.model}-选型报告.pdf`);
+      doc.save(`GOODHEAT-${result.model}-Recommendation.pdf`);
     }
 
     // Close modal on outside click
