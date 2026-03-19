@@ -291,16 +291,7 @@
           </div>
         </div>
 
-        <div class="border-t pt-4 mt-4">
-          <div class="text-xs text-gray-500 mb-2">计算过程：</div>
-          <div class="text-xs text-gray-600 space-y-1">
-            <div>热负荷：<span id="debugHeatLoad" class="font-mono">-</span> kW</div>
-            <div>末端形式：<span id="debugHeatingType" class="font-mono">-</span></div>
-            <div>需要制冷：<span id="debugCooling" class="font-mono">-</span></div>
-          </div>
-        </div>
-
-        <div class="space-y-3 mt-4">
+        <div class="space-y-3">
           <button class="w-full border-2 border-orange-500 text-orange-600 py-3 rounded-lg font-medium hover:bg-orange-50" data-t="downloadPDF">
             📥 下载 PDF 样本
           </button>
@@ -587,13 +578,16 @@
       const qTotal = (area * qBase) * fType * fAge * fRetrofit * fTemp;
       const qTotalKW = qTotal / 1000;
 
-      // Debug: show calculation on result page
-      window.debugInfo = {
-        area: area,
-        qTotalKW: qTotalKW.toFixed(2),
-        heatingType: heatingType,
-        needCooling: needCooling
-      };
+      // Debug: log calculation
+      console.log('=== 选型计算过程 ===');
+      console.log('面积:', area, 'm²');
+      console.log('建筑类型:', buildingType, '(系数:', fType + ')');
+      console.log('年代:', buildYear, '(系数:', fAge + ')');
+      console.log('末端形式:', heatingType, '(热指标:', qBase, 'W/m²)');
+      console.log('保温系数:', fRetrofit);
+      console.log('温度系数:', fTemp.toFixed(2));
+      console.log('计算热负荷:', qTotalKW.toFixed(2), 'kW');
+      console.log('需要制冷:', needCooling);
 
       // Determine required tank capacity (if needs hot water storage)
       const needsTank = waterVolume >= 150;
@@ -676,12 +670,6 @@
       document.getElementById('resultHeating').textContent = qTotalKW.toFixed(1) + ' kW';
       document.getElementById('resultWater').textContent = (selectedProduct.tank || waterVolume) + ' L';
       document.getElementById('resultEnergy').textContent = 'A+++';
-
-      // Show debug info
-      document.getElementById('debugHeatLoad').textContent = qTotalKW.toFixed(2);
-      document.getElementById('debugHeatingType').textContent = heatingType;
-      document.getElementById('debugCooling').textContent = needCooling ? '是' : '否';
-
       document.getElementById('resultModal').classList.remove('hidden');
     }
 
