@@ -589,6 +589,9 @@
       console.log('计算热负荷:', qTotalKW.toFixed(2), 'kW');
       console.log('需要制冷:', needCooling);
 
+      // Calculate hot water volume
+      const waterVolume = hasBathtub ? 300 : people * 50;
+
       // Determine required tank capacity (if needs hot water storage)
       const needsTank = waterVolume >= 150;
       const requiredTank = needsTank ? waterVolume : 0;
