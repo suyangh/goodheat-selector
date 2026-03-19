@@ -1,0 +1,227 @@
+[
+  {
+    "model": "GSHVSH-6AA1",
+    "capacity_kw": 6.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-8AA1",
+    "capacity_kw": 8.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-10AA1",
+    "capacity_kw": 10.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-10AA1",
+    "capacity_kw": 10.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-12AA1",
+    "capacity_kw": 12.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-12AA1",
+    "capacity_kw": 12.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-16AA1",
+    "capacity_kw": 16.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-16AA1",
+    "capacity_kw": 16.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-18AA1",
+    "capacity_kw": 18.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-18AA1",
+    "capacity_kw": 18.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-24AA1",
+    "capacity_kw": 24.0,
+    "type": "R290 Monoblock",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSPVSH-7BA1",
+    "capacity_kw": 7.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVSH-9BA1",
+    "capacity_kw": 9.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVSH-12BA1",
+    "capacity_kw": 12.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVSH-15BA1",
+    "capacity_kw": 15.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVSH-18BA1",
+    "capacity_kw": 18.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVSH-25BA1",
+    "capacity_kw": 25.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVSH-35BA1",
+    "capacity_kw": 35.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVTH-25BA1",
+    "capacity_kw": 25.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GSPVTH-35BA1",
+    "capacity_kw": 35.0,
+    "type": "Swimming Pool",
+    "category": "pool"
+  },
+  {
+    "model": "GHWVSH-210AA1",
+    "capacity_kw": 3.0,
+    "tank_capacity_l": 210,
+    "type": "R290 Hot Water",
+    "category": "hot_water"
+  },
+  {
+    "model": "GHWVSH-270AA1",
+    "capacity_kw": 3.0,
+    "tank_capacity_l": 270,
+    "type": "R290 Hot Water",
+    "category": "hot_water"
+  },
+  {
+    "model": "GHWVSH-320AA1",
+    "capacity_kw": 3.0,
+    "tank_capacity_l": 320,
+    "type": "R290 Hot Water",
+    "category": "hot_water"
+  },
+  {
+    "model": "GSHVSH-6BA1",
+    "capacity_kw": 6.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-8BA1",
+    "capacity_kw": 8.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-10BA1",
+    "capacity_kw": 10.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-10BA1",
+    "capacity_kw": 10.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-12BA1",
+    "capacity_kw": 12.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-12BA1",
+    "capacity_kw": 12.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-14BA1",
+    "capacity_kw": 14.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-14BA1",
+    "capacity_kw": 14.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-16BA1",
+    "capacity_kw": 16.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-16BA1",
+    "capacity_kw": 16.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVSH-18BA1",
+    "capacity_kw": 18.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-18BA1",
+    "capacity_kw": 18.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-24BA1",
+    "capacity_kw": 24.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  },
+  {
+    "model": "GSHVTH-34BA1",
+    "capacity_kw": 34.0,
+    "type": "R32 Mono Inverter",
+    "category": "heating_cooling"
+  }
+]
