@@ -218,6 +218,34 @@
         </div>
       </div>
 
+      <!-- Step 4: Cooling Option -->
+      <div class="mb-8">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4" data-t="coolingOption">夏季制冷需求</h2>
+
+        <div class="space-y-4">
+          <!-- Cooling Needed -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2" data-t="needCooling">您是否需要夏季制冷功能？</label>
+            <div class="flex gap-4">
+              <label class="flex-1 cursor-pointer">
+                <input type="radio" name="cooling" value="yes" class="sr-only" onchange="updateCardStyle(this)">
+                <div class="selectable-card border-2 rounded-lg p-3 text-center">
+                  <div class="text-2xl mb-1">❄️</div>
+                  <div class="text-sm" data-t="yesCooling">需要（三联供：供暖 + 制冷 + 热水）</div>
+                </div>
+              </label>
+              <label class="flex-1 cursor-pointer">
+                <input type="radio" name="cooling" value="no" class="sr-only" checked onchange="updateCardStyle(this)">
+                <div class="selectable-card card-selected border-2 rounded-lg p-3 text-center">
+                  <div class="text-2xl mb-1">🔥</div>
+                  <div class="text-sm" data-t="noCooling">不需要（只需供暖 + 热水）</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Submit Button -->
       <button onclick="calculate()" class="w-full btn-primary py-4 rounded-lg text-lg font-semibold shadow-lg">
         <span data-t="calculate">开始计算</span>
@@ -233,7 +261,14 @@
         <div class="text-center mb-6">
           <span class="text-sm text-orange-600 font-medium" data-t="recommended">推荐型号</span>
           <h3 id="resultModel" class="text-2xl font-bold text-gray-800 mt-1">GOODHEAT Aurora Plus 35C</h3>
-          <p id="resultType" class="text-gray-600 mt-1">空气源热泵</p>
+          <div id="resultType" class="text-gray-600 mt-1">空气源热泵</div>
+
+          <!-- 3-in-1 features -->
+          <div id="resultFeatures" class="mt-3 flex justify-center gap-2 text-sm">
+            <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded">🔥 供暖</span>
+            <span class="hidden px-2 py-1 bg-blue-100 text-blue-700 rounded" id="featureCooling">❄️ 制冷</span>
+            <span class="px-2 py-1 bg-green-100 text-green-700 rounded">💧 热水</span>
+          </div>
         </div>
 
         <div class="grid grid-cols-3 gap-4 mb-6">
@@ -307,7 +342,11 @@
         waterVolume: '热水容积',
         energyClass: '能效等级',
         downloadPDF: '📥 下载 PDF 样本',
-        findDealer: '📍 查找附近经销商'
+        findDealer: '📍 查找附近经销商',
+        coolingOption: '夏季制冷需求',
+        needCooling: '您是否需要夏季制冷功能？',
+        yesCooling: '需要（三联供：供暖 + 制冷 + 热水）',
+        noCooling: '不需要（只需供暖 + 热水）'
       },
       en: {
         subtitle: 'HVAC Product Selector',
@@ -346,7 +385,11 @@
         waterVolume: 'Water Volume',
         energyClass: 'Energy Class',
         downloadPDF: '📥 Download PDF',
-        findDealer: '📍 Find Dealer'
+        findDealer: '📍 Find Dealer',
+        coolingOption: 'Summer Cooling',
+        needCooling: 'Do you need summer cooling?',
+        yesCooling: 'Yes (3-in-1: Heating + Cooling + Hot Water)',
+        noCooling: 'No (Heating + Hot Water only)'
       },
       de: {
         subtitle: 'Intelligentes HVAC-Produktauswahltool',
@@ -385,7 +428,11 @@
         waterVolume: 'Wasservolumen',
         energyClass: 'Energieklasse',
         downloadPDF: '📥 PDF herunterladen',
-        findDealer: '📍 Händler suchen'
+        findDealer: '📍 Händler suchen',
+        coolingOption: 'Sommerkühlung',
+        needCooling: 'Benötigen Sie Sommerkühlung?',
+        yesCooling: 'Ja (3-in-1: Heizen + Kühlen + Warmwasser)',
+        noCooling: 'Nein (nur Heizen + Warmwasser)'
       }
     };
 
@@ -494,6 +541,7 @@
       const hasBathtub = document.querySelector('input[name="bathtub"]:checked').value === 'yes';
       const targetTemp = parseFloat(document.getElementById('targetTemp').value);
       const designTemp = parseFloat(document.getElementById('designTemp').value);
+      const needCooling = document.querySelector('input[name="cooling"]:checked')?.value === 'yes';
 
       // Get retrofit factor
       const retrofitCheckboxes = document.querySelectorAll('input[name="retrofit"]:checked');
@@ -534,34 +582,33 @@
       const needsTank = waterVolume >= 150;
       const requiredTank = needsTank ? waterVolume : 0;
 
-      // Find matching product based on heating type preference
-      // For radiator (high temp): prefer R290/R32 Monoblock (up to 75C)
-      // For floor heating (low temp): any heat pump works
+      // Find matching product
       let selectedProduct = null;
+      let isThreeInOne = false;
 
-      if (heatingType === 'radiator') {
-        // Need high temperature outlet - R290 or R32 monoblock
+      if (needCooling) {
+        // 需要制冷 - 只推荐 R290/R32 Monoblock（三联供）
         const candidates = products.filter(p =>
           (p.type === 'R290 Monoblock' || p.type === 'R32 Mono Inverter') &&
           p.capacity >= qTotalKW
         );
         if (candidates.length > 0) {
-          // Select smallest adequate capacity
           candidates.sort((a, b) => a.capacity - b.capacity);
           selectedProduct = candidates[0];
+          isThreeInOne = true;
         }
-      } else if (heatingType === 'floor') {
-        // Low temperature - any heating/cooling heat pump works
+      } else if (heatingType === 'radiator') {
+        // 不需要制冷，但需要高温出水 - R290/R32 Monoblock
         const candidates = products.filter(p =>
-          (p.category === 'heating_cooling' || p.category === 'heating_cooling_3phase') &&
+          (p.type === 'R290 Monoblock' || p.type === 'R32 Mono Inverter') &&
           p.capacity >= qTotalKW
         );
         if (candidates.length > 0) {
           candidates.sort((a, b) => a.capacity - b.capacity);
           selectedProduct = candidates[0];
         }
-      } else if (heatingType === 'fancoil') {
-        // Similar to floor heating
+      } else if (heatingType === 'floor' || heatingType === 'fancoil') {
+        // 地暖/风盘 - 低温工况，任何热泵都可以
         const candidates = products.filter(p =>
           (p.category === 'heating_cooling' || p.category === 'heating_cooling_3phase') &&
           p.capacity >= qTotalKW
@@ -576,8 +623,6 @@
       if (needsTank && requiredTank >= 200) {
         const tankProducts = products.filter(p => p.category === 'hot_water' && p.tank >= requiredTank);
         if (tankProducts.length > 0) {
-          // Recommend hot water heat pump + separate heating unit
-          // For now, select largest tank
           tankProducts.sort((a, b) => b.tank - a.tank);
           selectedProduct = tankProducts[0];
         }
@@ -587,6 +632,9 @@
       if (!selectedProduct) {
         selectedProduct = products.find(p => p.model === 'GSHVTH-24AA1') || products[products.length - 1];
       }
+
+      // Check if selected product is 3-in-1
+      isThreeInOne = (selectedProduct.type === 'R290 Monoblock' || selectedProduct.type === 'R32 Mono Inverter');
 
       // Format product type for display
       const typeDisplay = {
@@ -599,6 +647,15 @@
       // Show result
       document.getElementById('resultModel').textContent = selectedProduct.model;
       document.getElementById('resultType').textContent = typeDisplay;
+
+      // Show 3-in-1 features
+      const featureCooling = document.getElementById('featureCooling');
+      if (isThreeInOne) {
+        featureCooling.classList.remove('hidden');
+      } else {
+        featureCooling.classList.add('hidden');
+      }
+
       document.getElementById('resultHeating').textContent = qTotalKW.toFixed(1) + ' kW';
       document.getElementById('resultWater').textContent = (selectedProduct.tank || waterVolume) + ' L';
       document.getElementById('resultEnergy').textContent = 'A+++';
