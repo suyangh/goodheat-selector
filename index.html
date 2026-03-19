@@ -11,9 +11,11 @@
     .btn-primary { background-color: #F97316; color: white; }
     .btn-primary:hover { background-color: #EA580C; }
     /* Card selection styles */
-    .card-selected { border-color: #F97316; background-color: #FFF7ED; }
-    .selectable-card { border-color: #E5E7EB; }
+    .card-selected { border-color: #F97316; background-color: #FFF7ED; transform: scale(1.02); }
+    .selectable-card { border-color: #E5E7EB; transition: all 0.1s ease; cursor: pointer; }
     .selectable-card:hover { background-color: #F9FAFB; }
+    /* Range slider styling */
+    input[type=range] { accent-color: #F97316; }
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen py-8 px-4">
@@ -458,10 +460,6 @@
     }
 
     function updateCardStyle(selectedInput) {
-      // Find the parent label and its card div
-      const card = selectedInput.parentElement.querySelector('.selectable-card');
-      if (!card) return;
-
       // Get the name of the radio group
       const groupName = selectedInput.name;
 
@@ -470,11 +468,16 @@
         const parentCard = input.parentElement.querySelector('.selectable-card');
         if (parentCard) {
           parentCard.classList.remove('card-selected');
+          parentCard.style.transform = '';
         }
       });
 
       // Add card-selected to selected card
-      card.classList.add('card-selected');
+      const card = selectedInput.parentElement.querySelector('.selectable-card');
+      if (card) {
+        card.classList.add('card-selected');
+        card.style.transform = 'scale(1.02)';
+      }
     }
 
     function updateDesignTemp() {
