@@ -8,6 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>GOODHEAT 产品选型工具</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     .step-active { border-color: #F97316; background-color: #FFF7ED; }
@@ -295,7 +296,7 @@
         </div>
 
         <div class="space-y-3">
-          <button class="w-full border-2 border-orange-500 text-orange-600 py-3 rounded-lg font-medium hover:bg-orange-50" data-t="downloadPDF">
+          <button class="w-full border-2 border-orange-500 text-orange-600 py-3 rounded-lg font-medium hover:bg-orange-50" data-t="downloadPDF" onclick="downloadPDF()">
             📥 下载 PDF 样本
           </button>
           <button class="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50" data-t="findDealer">
@@ -528,6 +529,33 @@
       { model: 'GHWVSH-320AA1', type: 'R290 Hot Water', capacity: 3, tank: 320, category: 'hot_water' }
     ];
 
+    // 产品详细参数
+    const productDetails = {
+      'R290 Monoblock': {
+        desc: 'R290 变频热泵（高温型）',
+        features: ['供暖 + 制冷 + 热水三联供', '最高出水温度 75℃', 'A+++ 能效', '-25℃稳定运行', 'R290 环保冷媒'],
+        temp: '75℃'
+      },
+      'R32 Mono Inverter': {
+        desc: 'R32 变频热泵',
+        features: ['供暖 + 制冷 + 热水三联供', '最高出水温度 60℃', 'A+++ 能效', '-25℃稳定运行', 'R32 环保冷媒'],
+        temp: '60℃'
+      },
+      'Swimming Pool': {
+        desc: '泳池热泵',
+        features: ['泳池专用', '制冷 + 制热', '高能效 COP 达 13', 'R32 环保冷媒'],
+        temp: 'N/A'
+      },
+      'R290 Hot Water': {
+        desc: 'R290 热水热泵',
+        features: ['生活热水专用', '变频节能', '微通道换热', 'IPX4 防水'],
+        temp: 'N/A'
+      }
+    };
+
+    // 存储当前选型结果
+    window.currentResult = null;
+
     function calculate() {
       // Get input values
       const area = parseFloat(document.getElementById('area').value);
@@ -652,6 +680,16 @@
         'R290 Hot Water': 'R290 热水热泵'
       }[selectedProduct.type] || selectedProduct.type;
 
+      // 保存当前结果
+      window.currentResult = {
+        model: selectedProduct.model,
+        type: selectedProduct.type,
+        typeDisplay: typeDisplay,
+        heatingCapacity: qTotalKW.toFixed(1),
+        waterVolume: selectedProduct.tank || waterVolume,
+        needCooling: needCooling
+      };
+
       // Show result
       document.getElementById('resultModel').textContent = selectedProduct.model;
       document.getElementById('resultType').textContent = typeDisplay;
@@ -672,6 +710,100 @@
 
     function closeModal() {
       document.getElementById('resultModal').classList.add('hidden');
+    }
+
+    // Download PDF function
+    function downloadPDF() {
+      if (!window.currentResult) {
+        alert('请先进行产品选型计算');
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const result = window.currentResult;
+      const details = productDetails[result.type] || {};
+
+      // Title
+      doc.setFontSize(20);
+      doc.setTextColor(249, 115, 22); // Orange color
+      doc.text('GOODHEAT 产品推荐报告', 20, 20);
+
+      // Date
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      const date = new Date().toLocaleDateString('zh-CN');
+      doc.text(`生成日期：${date}`, 20, 30);
+
+      // Line
+      doc.setDrawColor(249, 115, 22);
+      doc.line(20, 35, 190, 35);
+
+      // Recommended Model
+      doc.setFontSize(16);
+      doc.setTextColor(0);
+      doc.text(`推荐型号：${result.model}`, 20, 50);
+
+      doc.setFontSize(12);
+      doc.setTextColor(100);
+      doc.text(`产品类型：${result.typeDisplay}`, 20, 60);
+
+      // Key Parameters
+      doc.setFontSize(14);
+      doc.setTextColor(0);
+      doc.text('关键参数：', 20, 75);
+
+      doc.setFontSize(11);
+      doc.setTextColor(50);
+      doc.text(`• 采暖输出功率：${result.heatingCapacity} kW`, 25, 85);
+      doc.text(`• 热水容积：${result.waterVolume} L`, 25, 93);
+      doc.text(`• 能效等级：A+++`, 25, 101);
+      if (details.temp !== 'N/A') {
+        doc.text(`• 最高出水温度：${details.temp}`, 25, 109);
+      }
+      if (result.needCooling) {
+        doc.text(`• 功能：供暖 + 制冷 + 生活热水（三联供）`, 25, 117);
+      } else {
+        doc.text(`• 功能：供暖 + 生活热水`, 25, 117);
+      }
+
+      // Features
+      if (details.features && details.features.length > 0) {
+        doc.setFontSize(14);
+        doc.setTextColor(0);
+        doc.text('产品特点：', 20, 135);
+
+        doc.setFontSize(10);
+        doc.setTextColor(50);
+        details.features.forEach((feature, i) => {
+          doc.text(`• ${feature}`, 25, 145 + (i * 6));
+        });
+      }
+
+      // User Input Summary
+      doc.setFontSize(14);
+      doc.setTextColor(0);
+      doc.text('选型输入条件：', 20, 195);
+
+      const area = document.getElementById('area')?.value || '-';
+      const buildingType = document.querySelector('input[name="buildingType"]:checked')?.value || '-';
+      const heatingType = document.querySelector('input[name="heatingType"]:checked')?.value || '-';
+
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+      doc.text(`• 建筑面积：${area} m²`, 25, 205);
+      doc.text(`• 建筑类型：${buildingType}`, 25, 212);
+      doc.text(`• 末端形式：${heatingType}`, 25, 219);
+
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      doc.text('GOODHEAT - Professional HVAC Solutions', 20, 280);
+      doc.text('www.goodheatglobal.com', 150, 280);
+
+      // Save
+      doc.save(`GOODHEAT-${result.model}-选型报告.pdf`);
     }
 
     // Close modal on outside click
