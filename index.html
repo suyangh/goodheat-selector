@@ -45,21 +45,21 @@
             <label class="block text-sm font-medium text-gray-700 mb-2" data-t="buildingType">建筑类型</label>
             <div class="grid grid-cols-3 gap-3">
               <label class="cursor-pointer">
-                <input type="radio" name="buildingType" value="detached" class="sr-only" checked onchange="updateCardStyle(this)">
+                <input type="radio" name="buildingType" value="detached" class="sr-only" checked onclick="updateCardStyle(this)">
                 <div class="selectable-card card-selected border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">🏠</div>
                   <div class="text-sm" data-t="detached">独栋</div>
                 </div>
               </label>
               <label class="cursor-pointer">
-                <input type="radio" name="buildingType" value="terraced" class="sr-only" onchange="updateCardStyle(this)">
+                <input type="radio" name="buildingType" value="terraced" class="sr-only" onclick="updateCardStyle(this)">
                 <div class="selectable-card border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">🏘️</div>
                   <div class="text-sm" data-t="terraced">联排</div>
                 </div>
               </label>
               <label class="cursor-pointer">
-                <input type="radio" name="buildingType" value="apartment" class="sr-only" onchange="updateCardStyle(this)">
+                <input type="radio" name="buildingType" value="apartment" class="sr-only" onclick="updateCardStyle(this)">
                 <div class="selectable-card border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">🏢</div>
                   <div class="text-sm" data-t="apartment">公寓</div>
@@ -98,21 +98,21 @@
             <label class="block text-sm font-medium text-gray-700 mb-2" data-t="heatingType">末端形式</label>
             <div class="grid grid-cols-3 gap-3">
               <label class="cursor-pointer">
-                <input type="radio" name="heatingType" value="radiator" class="sr-only" checked onchange="updateCardStyle(this)">
+                <input type="radio" name="heatingType" value="radiator" class="sr-only" checked onclick="updateCardStyle(this)">
                 <div class="selectable-card card-selected border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">🔥</div>
                   <div class="text-sm" data-t="radiator">散热器</div>
                 </div>
               </label>
               <label class="cursor-pointer">
-                <input type="radio" name="heatingType" value="floor" class="sr-only" onchange="updateCardStyle(this)">
+                <input type="radio" name="heatingType" value="floor" class="sr-only" onclick="updateCardStyle(this)">
                 <div class="selectable-card border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">♨️</div>
                   <div class="text-sm" data-t="floor">地暖</div>
                 </div>
               </label>
               <label class="cursor-pointer">
-                <input type="radio" name="heatingType" value="fancoil" class="sr-only" onchange="updateCardStyle(this)">
+                <input type="radio" name="heatingType" value="fancoil" class="sr-only" onclick="updateCardStyle(this)">
                 <div class="selectable-card border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">💨</div>
                   <div class="text-sm" data-t="fancoil">风机盘管</div>
@@ -165,11 +165,11 @@
             <label class="block text-sm font-medium text-gray-700 mb-2" data-t="bathtub">您家是否有浴缸？</label>
             <div class="flex gap-4">
               <label class="flex-1 cursor-pointer">
-                <input type="radio" name="bathtub" value="yes" class="sr-only" onchange="updateCardStyle(this)">
+                <input type="radio" name="bathtub" value="yes" class="sr-only" onclick="updateCardStyle(this)">
                 <div class="selectable-card border-2 rounded-lg p-3 text-center" data-t="yes">是</div>
               </label>
               <label class="flex-1 cursor-pointer">
-                <input type="radio" name="bathtub" value="no" class="sr-only" checked onchange="updateCardStyle(this)">
+                <input type="radio" name="bathtub" value="no" class="sr-only" checked onclick="updateCardStyle(this)">
                 <div class="selectable-card card-selected border-2 rounded-lg p-3 text-center" data-t="no">否</div>
               </label>
             </div>
@@ -230,14 +230,14 @@
             <label class="block text-sm font-medium text-gray-700 mb-2" data-t="needCooling">您是否需要夏季制冷功能？</label>
             <div class="flex gap-4">
               <label class="flex-1 cursor-pointer">
-                <input type="radio" name="cooling" value="yes" class="sr-only" onchange="updateCardStyle(this)">
+                <input type="radio" name="cooling" value="yes" class="sr-only" onclick="updateCardStyle(this)">
                 <div class="selectable-card border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">❄️</div>
                   <div class="text-sm" data-t="yesCooling">需要（三联供：供暖 + 制冷 + 热水）</div>
                 </div>
               </label>
               <label class="flex-1 cursor-pointer">
-                <input type="radio" name="cooling" value="no" class="sr-only" checked onchange="updateCardStyle(this)">
+                <input type="radio" name="cooling" value="no" class="sr-only" checked onclick="updateCardStyle(this)">
                 <div class="selectable-card card-selected border-2 rounded-lg p-3 text-center">
                   <div class="text-2xl mb-1">🔥</div>
                   <div class="text-sm" data-t="noCooling">不需要（只需供暖 + 热水）</div>
